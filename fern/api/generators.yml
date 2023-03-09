@@ -14,10 +14,10 @@ groups:
         version: 0.2.2
         output:
           location: npm
-          package-name: '@fern-api/{company}'
+          package-name: '@fern-api/attio'
           token: ${FERN_NPM_TOKEN}
         github:
-          repository: fern-{company}/{company}-node
+          repository: fern-attio/attio-node
           
       - name: fernapi/fern-postman
         version: 0.0.40
@@ -26,4 +26,4 @@ groups:
           api-key: ${FERN_POSTMAN_API_KEY}
           workspace-id: ${FERN_POSTMAN_WORKSPACE_ID}
         github:
-          repository: fern-{company}/{company}-postman
+          repository: fern-attio/attio-postman
