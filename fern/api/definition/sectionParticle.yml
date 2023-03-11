@@ -524,9 +524,9 @@ service:
       response: ListEntryAttributesResponse
 
 types:
-  ListObjectsResponseBodySchemaData: list<object>
+  ListObjectsResponseBodySchemaData: list<ListObject>
 
-  object:
+  ListObject:
     properties:
       id: ObjectId
       api_slug: ObjectApiSlug
@@ -1228,9 +1228,9 @@ types:
 
   ListRecordAttributeValuesResponseBodySchemaData: list<unknown>
 
-  ListListsResponseBodySchemaData: list<list>
+  ListListsResponseBodySchemaData: list<ListType>
 
-  list:
+  lListType:
     properties:
       id: ListId
       api_slug: ListApiSlug
@@ -1603,7 +1603,7 @@ types:
 
   GetObjectsResponse:
     properties:
-      data: object
+      data: ListObject
 
   TargetParameters:
     docs: Whether the Attributes are on an Object or a List.
@@ -1738,7 +1738,7 @@ types:
 
   CreateListResponse:
     properties:
-      data: list
+      data: ListType
 
   GetAllEntriesResponse:
     properties:
