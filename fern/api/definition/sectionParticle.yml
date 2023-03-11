@@ -1,0 +1,1768 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  __package__: __package__.yml
+
+service:
+  auth: false
+  base-path: /v2
+  endpoints:
+    getAll:
+      path: /objects
+      method: GET
+      docs: >-
+        Lists all system-defined and user-defined objects in your workspace,
+        including their defined attributes.
+      display-name: List Objects
+      request:
+        name: ListObjectsRequest
+      response: ListObjectsResponse
+
+    get:
+      path: /objects/{object}
+      method: GET
+      docs: Gets a single Object by its `object_id`.
+      display-name: Get Object
+      path-parameters:
+        object: string
+      request:
+        name: GetObjectRequest
+      response: GetObjectsResponse
+
+    getAllAttributes:
+      path: /{target}/{identifier}/attributes
+      method: GET
+      docs: >-
+        Lists all Attributes defined on a specific Object or List. Attributes
+        are returned in the order that they are sorted by in the UI.
+      display-name: List Attributes
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+      request:
+        name: ListAttributesRequest
+        query-parameters:
+          limit: optional<integer>
+          offset: optional<integer>
+          show_archived: optional<boolean>
+      response: ListAttributesResponse
+
+    create:
+      path: /{target}/{identifier}/attributes
+      method: POST
+      docs: Creates a new Attribute on either an Object or a List.
+      display-name: Create Attribute
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+      request:
+        name: CreateAttributeRequest
+        body:
+          properties:
+            data: CreateAttributeRequestBodySchemaData
+      response: CreateAttributeResponse
+
+    getAttribute:
+      path: /{target}/{identifier}/attributes/{attribute}
+      method: GET
+      docs: Gets information about a single Attribute on either an Object or a List.
+      display-name: Get Attribute
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: GetAttributeRequest
+      response: GetAttributeResponse 
+
+    update:
+      path: /{target}/{identifier}/attributes/{attribute}
+      method: PATCH
+      docs: Updates a single Attribute on a given Object or List.
+      display-name: Update Attribute
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: UpdateAttributeRequest
+        body:
+          properties:
+            data: UpdateAttributeRequestBodySchemaData
+      response: UpdateAttributeResponse
+
+    getAllOptions:
+      path: /{target}/{identifier}/attributes/{attribute}/options
+      method: GET
+      docs: >-
+        Lists all Select Options for a particular Attribute on either an Object
+        or a List.
+      display-name: List Select Options
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: ListSelectOptionsRequest
+        query-parameters:
+          show_archived: optional<boolean>
+      response: ListSelectOptionsResponse
+
+    createOption:
+      path: /{target}/{identifier}/attributes/{attribute}/options
+      method: POST
+      docs: Adds a Select Option to a Select Attribute on an Object or a List.
+      display-name: Create Select Option
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: CreateSelectOptionRequest
+        body:
+          properties:
+            data: CreateSelectOptionRequestBodySchemaData
+      response: CreateOptionResponse
+
+    updateOption:
+      path: /{target}/{identifier}/attributes/{attribute}/options/{option_id}
+      method: PATCH
+      docs: Updates a Select Option on an Attribute on either an Object or a List.
+      display-name: Update Select Option
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+        option_id: string
+      request:
+        name: UpdateSelectOptionRequest
+        body:
+          properties:
+            data: UpdateSelectOptionRequestBodySchemaData
+      response: UpdateOptionResponse
+
+    updateStatus:
+      path: >-
+        /{target}/{identifier}/attributes/{attribute}/statuses/{pipeline_stage_id}
+      method: PATCH
+      docs: Update a Status on an Status Attribute on either an Object or a List.
+      display-name: Update Status
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+        pipeline_stage_id: string
+      request:
+        name: UpdateStatusRequest
+        body:
+          properties:
+            data: UpdateStatusRequestBodySchemaData
+      response: UpdateStatusResponse
+
+    getStatus:
+      path: /{target}/{identifier}/attributes/{attribute}/statuses
+      method: GET
+      docs: >-
+        Lists all Statuses for a particular Status Attribute on either an Object
+        or a List.
+      display-name: List Statuses
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: ListStatusesRequest
+        query-parameters:
+          show_archived: optional<boolean>
+      response: GetStatusResponse
+
+    createStatus:
+      path: /{target}/{identifier}/attributes/{attribute}/statuses
+      method: POST
+      docs: Add a new Status to a Status Attribute on either an Object or a List.
+      display-name: Create Status
+      path-parameters:
+        target: TargetParameters
+        identifier: string
+        attribute: string
+      request:
+        name: CreateStatusRequest
+        body:
+          properties:
+            data: CreateStatusRequestBodySchemaData
+      response: CreateStatusResponse
+
+    getRecord:
+      path: /objects/{object}/records/{record_id}
+      method: GET
+      docs: Gets a single person, company or other Record by its `record_id`.
+      display-name: Get Record
+      path-parameters:
+        object: string
+        record_id: string
+      request:
+        name: GetRecordRequest
+      response: GetRecordResponse
+
+    updateRecord:
+      path: /objects/{object}/records/{record_id}
+      method: PATCH
+      docs: >-
+        Use this endpoint to update people, companies and other Records by
+        record_id. If the update payload includes multiselect Attributes, the
+        values supplied will be created and prepended to the list of values that
+        already exist (if any). Use the PUT Assert endpoint to overwrite or
+        remove multiselect Attribute Values.
+      display-name: Update Record
+      path-parameters:
+        object: string
+        record_id: string
+      request:
+        name: UpdateRecordRequest
+        body:
+          properties:
+            data: UpdateRecordRequestBodySchemaData
+      response: UpdateRecordResponse
+
+    getAllRecords:
+      path: /objects/{object}/records/query
+      method: POST
+      docs: >-
+        Lists people, company or other Records, with the option to filter and
+        sort results.
+      display-name: List Records
+      path-parameters:
+        object: string
+      request:
+        name: ListRecordsRequest
+        body:
+          properties:
+            filter: optional<ListRecordsRequestBodySchemaFilter>
+            sorts:
+              docs: >-
+                An object used to sort results. See the [full guide to filtering
+                and sorting here](/developers/filtering-and-sorting).
+              type: optional<list<unknown>>
+            limit:
+              docs: >-
+                The maximum number of results to return. Defaults to 500 See the
+                [full guide to pagination here](/developers/pagination).
+              type: optional<double>
+            offset:
+              docs: >-
+                The number of results to skip over before returning. Defaults to
+                0. See the [full guide to pagination
+                here](/developers/pagination).
+              type: optional<double>
+      response: GetAllRecordsResponse
+
+    updateOrCreateRecord:
+      path: /objects/{object}/records
+      method: PUT
+      docs: >-
+        Use this endpoint to create or update people, companies and other
+        Records. A matching Attribute is used to search for existing Records. If
+        a Record is found with the same value for the matching Attribute, that
+        Record will be updated. If no Record with the same value for the
+        matching Attribute is found, a new Record will be created instead. If
+        you would like to avoid matching, please use the Create Record endpoint.
+        If the matching attribute is a multiselect attribute, any newer values
+        supplied will be created however any values removed will not be deleted.
+        For any other multiselect attribute, all values will be either created
+        or deleted as necessary to match the list of supplied values.
+      display-name: Assert Record
+      path-parameters:
+        object: string
+      request:
+        name: AssertRecordRequest
+        query-parameters:
+          matching_attribute: string
+        body:
+          properties:
+            data: AssertRecordRequestBodySchemaData
+      response: AssertRecordResponse
+
+    createRecord:
+      path: /objects/{object}/records
+      method: POST
+      docs: >-
+        Creates a new person, company or other Record. This endpoint will throw
+        on conflicts of unique Attributes. If you would prefer to update Records
+        on conflicts, please use the Assert Record endpoint instead.
+      display-name: Create Record
+      path-parameters:
+        object: string
+      request:
+        name: CreateRecordRequest
+        body:
+          properties:
+            data: CreateRecordRequestBodySchemaData
+      response: CreateRecordResponse
+
+    getAllRecordAttributes:
+      path: /objects/{object}/records/{record_id}/attributes/{attribute}/values
+      method: GET
+      docs: >-
+        Gets all values for a given Attribute on a Record. If the Attribute is
+        historic, this endpoint has the ability to return all historic values
+        using the `show_historic` query param.
+      display-name: List Record Attribute Values
+      path-parameters:
+        object: string
+        record_id: string
+        attribute: string
+      request:
+        name: ListRecordAttributeValuesRequest
+        query-parameters:
+          show_historic: optional<boolean>
+          limit: optional<integer>
+          offset: optional<integer>
+      response: ListRecordAttributeResponse
+
+    getAllLists:
+      path: /lists
+      method: GET
+      docs: >-
+        List all Lists that your Access Token has access to. Lists are returned
+        in the order that they are sorted in the sidebar.
+      display-name: List Lists
+      request:
+        name: ListListsRequest
+      response: ListResponse
+
+    createList:
+      path: /lists
+      method: POST
+      docs: >-
+        Creates a new List. Once you have your List, add Attributes to it using
+        the "Create Attribute" endpoint, and add Records to it using the "Add
+        Records to List" endpoint. New Lists must specify which Records can be
+        added with the `parent_object` parameter which accepts either an Object
+        slug or an Object ID. Permissions for the List are controlled with the
+        `workspace_access` and `workspace_member_access` parameters. Please note
+        that new Lists must have either `workspace_access` set to
+        `"full-access"` or one or more element of `workspace_member_access` with
+        a `"full-access"` level. It is also possible to receive a `403` billing
+        error if your Workspace is not on a plan that supports either advanced
+        Workspace or Workspace Member level access for Lists.
+      display-name: Create List
+      request:
+        name: CreateListRequest
+        body:
+          properties:
+            data: CreateListRequestBodySchemaData
+      response: CreateListResponse
+
+    getList:
+      path: /lists/{list}
+      method: GET
+      docs: >-
+        Gets a single List in your Workspace that your Access Token has access
+        to.
+      display-name: Get List
+      path-parameters:
+        list: string
+      request:
+        name: GetListRequest
+      response: CreateListResponse
+
+    updateList:
+      path: /lists/{list}
+      method: PATCH
+      docs: >-
+        Updates an existing List. Permissions for the List are controlled with
+        the `workspace_access` and `workspace_member_access` parameters. Please
+        note that Lists must have either `workspace_access` set to
+        `"full-access"` or one or more element of `workspace_member_access` with
+        a `"full-access"` level. It is also possible to receive a `403` billing
+        error if your Workspace is not on a plan that supports either advanced
+        Workspace or Workspace Member level access for Lists. Changing the
+        parent Object of a List is not possible through the API as it can have
+        unintended side-effects that should be considered carefully. If you wish
+        to carry out a parent Object change you should do so through the UI.
+      display-name: Update List
+      path-parameters:
+        list: string
+      request:
+        name: UpdateListRequest
+        body:
+          properties:
+            data: UpdateListRequestBodySchemaData
+      response: CreateListResponse
+
+    getAllEntries:
+      path: /lists/{list}/entries/query
+      method: POST
+      docs: >-
+        Lists Entries in a given List, with the option to filter and sort
+        results.
+      display-name: List Entries
+      path-parameters:
+        list: string
+      request:
+        name: ListEntriesRequest
+        body:
+          properties:
+            filter: optional<ListEntriesRequestBodySchemaFilter>
+            sorts:
+              docs: >-
+                An object used to sort results. See the [full guide to filtering
+                and sorting here](/developers/filtering-and-sorting).
+              type: optional<list<unknown>>
+            limit:
+              docs: >-
+                The maximum number of results to return. Defaults to 500 See the
+                [full guide to pagination here](/developers/pagination).
+              type: optional<double>
+            offset:
+              docs: >-
+                The number of results to skip over before returning. Defaults to
+                0. See the [full guide to pagination
+                here](/developers/pagination).
+              type: optional<double>
+      response: GetAllEntriesResponse
+
+    getEntry:
+      path: /lists/{list}/entries/{entry_id}
+      method: GET
+      docs: Gets a single List Entry by its `entry_id`.
+      display-name: Get List Entry
+      path-parameters:
+        list: string
+        entry_id: string
+      request:
+        name: GetListEntryRequest
+      response: GetListEntryResponse
+
+    updateListEntry:
+      path: /lists/{list}/entries/{entry_id}
+      method: PUT
+      docs: >-
+        Use this endpoint to update List Entries by entry_id. If the update
+        payload includes multiselect Attributes, the values supplied will
+        overwrite/remove the list of values that already exist (if any). Use the
+        PATCH endpoint to add multiselect Attribute Values without removing
+        those value that already exist.
+      display-name: Update List Entry
+      path-parameters:
+        list: string
+        entry_id: string
+      request:
+        name: UpdateListEntryRequest
+        body:
+          properties:
+            data: UpdateListEntryRequestBodySchemaData
+      response: UpdateListEntryResponse
+
+    deleteEntry:
+      path: /lists/{list}/entries/{entry_id}
+      method: DELETE
+      docs: Deletes a single List Entry by its `entry_id`.
+      display-name: Delete List Entry
+      path-parameters:
+        list: string
+        entry_id: string
+      request:
+        name: DeleteListEntryRequest
+      response: DeleteListEntryResponse
+
+    updateEntry:
+      path: /lists/{list}/entries/{entry_id}
+      method: PATCH
+      docs: >-
+        Use this endpoint to update List Entries by entry_id. If the update
+        payload includes multiselect Attributes, the values supplied will be
+        created and prepended to the list of values that already exist (if any).
+        Use the PUT endpoint to overwrite or remove multiselect Attribute
+        Values.
+      display-name: Patch Update List Entry
+      path-parameters:
+        list: string
+        entry_id: string
+      request:
+        name: PatchUpdateListEntryRequest
+        body:
+          properties:
+            data: PatchUpdateListEntryRequestBodySchemaData
+      response: PatchUpdateListEntryResponse
+
+    createListEntry:
+      path: /lists/{list}/entries
+      method: POST
+      docs: >-
+        Adds a Record to a List as a new List Entry. This endpoint will throw on
+        conflicts of unique Attributes. Multiple List Entries are allowed for
+        the same parent Record
+      display-name: Add Record to List
+      path-parameters:
+        list: string
+      request:
+        name: AddRecordtoListRequest
+        body:
+          properties:
+            data: AddRecordtoListRequestBodySchemaData
+      response: AddRecordToListResponse
+
+    getAllAttributesForEntry:
+      path: /lists/{list}/entries/{entry_id}/attributes/{attribute}/values
+      method: GET
+      docs: >-
+        Gets all values for a given Attribute on a List Entry. If the Attribute
+        is historic, this endpoint has the ability to return all historic values
+        using the `show_historic` query param.
+      display-name: List List Entry Attribute Values
+      path-parameters:
+        list: string
+        entry_id: string
+        attribute: string
+      request:
+        name: ListListEntryAttributeValuesRequest
+        query-parameters:
+          show_historic: optional<boolean>
+          limit: optional<integer>
+          offset: optional<integer>
+      response: ListEntryAttributesResponse
+
+types:
+  ListObjectsResponseBodySchemaData: list<object>
+
+  object:
+    properties:
+      id: ObjectId
+      api_slug: ObjectApiSlug
+      singular_noun: ObjectSingularNoun
+      plural_noun: ObjectPluralNoun
+      created_at: ObjectCreatedAt
+
+  ObjectId:
+    properties:
+      workspace_id: ObjectWorkspaceId
+      object_id: ObjectObjectId
+
+  ObjectWorkspaceId:
+    docs: A UUID to identify the Workspace this Object belongs to.
+    type: string
+
+  ObjectObjectId:
+    docs: A UUID to identify the Object.
+    type: string
+
+  ObjectApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the Object through URLs and API
+      calls. Formatted in snake case.
+    type: optional<string>
+
+  ObjectSingularNoun:
+    docs: The singular form of the Object's name.
+    type: optional<string>
+
+  ObjectPluralNoun:
+    docs: The plural form of the Object's name.
+    type: optional<string>
+
+  ObjectCreatedAt:
+    docs: When the Object was created.
+    type: string
+
+  ListAttributesResponseBodySchemaData: list<attribute>
+
+  attribute:
+    properties:
+      id: AttributeId
+      title: AttributeTitle
+      description: AttributeDescription
+      api_slug: AttributeApiSlug
+      type: AttributeType
+      is_system_attribute: AttributeIsSystemAttribute
+      is_required: AttributeIsRequired
+      is_unique: AttributeIsUnique
+      is_multiselect: AttributeIsMultiselect
+      is_default_value_enabled: AttributeIsDefaultValueEnabled
+      is_archived: AttributeIsArchived
+      default_value: AttributeDefaultValue
+      created_at: AttributeCreatedAt
+      config: AttributeConfig
+
+  AttributeId:
+    properties:
+      workspace_id: AttributeWorkspaceId
+      object_id: AttributeObjectId
+      attribute_id: AttributeAttributeId
+
+  AttributeWorkspaceId:
+    docs: A UUID representing the Workspace this Attribute belongs to.
+    type: string
+
+  AttributeObjectId:
+    docs: A UUID to identify the Object this Attribute belongs to
+    type: string
+
+  AttributeAttributeId:
+    docs: A UUID to identify this Attribute.
+    type: string
+
+  AttributeTitle:
+    docs: A title for the Attribute, to be displayed across the app.
+    type: string
+
+  AttributeDescription:
+    docs: A text description of the Attribute.
+    type: optional<string>
+
+  AttributeApiSlug:
+    docs: >-
+      A unique slug for the Attribute for use in API responses and URLs. Formatted in snake case.
+    type: string
+
+  AttributeType:
+    enum:
+      - static
+
+  AttributeIsSystemAttribute:
+    docs: >-
+      `true` if this is an Attio system-defined Attribute, `false` if defined by
+      a user or non-Attio system.
+    type: boolean
+
+  AttributeIsRequired:
+    docs: >-
+      When `is_required` is `true`, new Records/Entries must have a value for
+      this Attribute. If `false`, values may be `null`. This value does not
+      affect existing data and you do not need to backfill `null` values if
+      changing `is_required` from `false` to `true`.
+    type: boolean
+
+  AttributeIsUnique:
+    docs: >-
+      Whether or not new values for this Attribute must be unique. Uniqueness
+      restrictions are only applied to new data and do not apply retroactively
+      to previously created data.
+    type: boolean
+
+  AttributeIsMultiselect:
+    docs: >-
+      Whether or not this Attribute can have multiple values. Multiselect is
+      only available on some value types.
+    type: boolean
+
+  AttributeIsDefaultValueEnabled:
+    docs: >-
+      Whether this Attribute has a default value enabled. Must be `true` when
+      `is_required` is `true`.
+    type: boolean
+
+  AttributeIsArchived:
+    docs: >-
+      Whether this Attribute has been archived. Archived Attributes are hidden
+      from most UI, but can be restored either over the API or in Workspace
+      settings. See the [guide on archiving and
+      deleting](/developers/archiving-and-deleting)for more information.
+    type: boolean
+
+  AttributeDefaultValue:
+    docs: >-
+      The default value for this Attribute.Static values are used to directly
+      populate values using their contents. Dynamic values are used to lookup
+      data at the point of creation. For example, you could use a dynamic value
+      to insert a value for the currently logged in user. Which default values
+      are available is dependent on the type of the Attribute.
+    type: unknown
+
+  AttributeCreatedAt:
+    docs: When this Attribute was created.
+    type: string
+
+  AttributeConfig:
+    docs: Additional, type-dependent configuration for the Attribute.
+    properties:
+      currency: AttributeCurrency
+      record_reference: AttributeRecordReference
+
+  AttributeCurrency:
+    docs: Configuration available for Attributes of type "currency".
+    properties:
+      default_currency_code: AttributeDefaultCurrencyCode
+      display_type: AttributeDisplayType
+
+  AttributeDefaultCurrencyCode:
+    docs: >-
+      The ISO4217 code representing the currency that values for this Attribute
+      should be stored in.
+    enum:
+      - EUR
+      - GBP
+      - USD
+
+  AttributeDisplayType:
+    docs: >-
+      How the currency should be displayed across the app. "code" will display
+      the ISO currency code e.g. "USD", "name" will display the localized
+      currency name e.g. "British pound", "narrowSymbol" will display "$1"
+      instead of "US$1" and "symbol" will display a localized currency symbol
+      such as "$".
+    enum:
+      - code
+      - name
+      - narrowSymbol
+      - symbol
+
+  AttributeRecordReference:
+    docs: Configuration available for Attributes of type "record-reference".
+    properties:
+      allowed_object_ids: AttributeAllowedObjectIds
+
+  AttributeAllowedObjectIds:
+    docs: >-
+      A list of UUIDs to indicate which Objects Records are allowed to belong
+      to. Leave empty to to allow Records from all Object types.
+    type: optional<unknown>
+
+  CreateAttributeRequestBodySchemaData:
+    properties:
+      title: CreateAttributeRequestBodySchemaDataTitle
+      description: CreateAttributeRequestBodySchemaDataDescription
+      api_slug: CreateAttributeRequestBodySchemaDataApiSlug
+      type: CreateAttributeRequestBodySchemaDataType
+      is_required: CreateAttributeRequestBodySchemaDataIsRequired
+      is_unique: CreateAttributeRequestBodySchemaDataIsUnique
+      is_multiselect: CreateAttributeRequestBodySchemaDataIsMultiselect
+      default_value: optional<CreateAttributeRequestBodySchemaDataDefaultValue>
+      config: CreateAttributeRequestBodySchemaDataConfig
+
+  CreateAttributeRequestBodySchemaDataTitle:
+    docs: The name of the Attribute. The title will be visible across Attio's UI.
+    type: string
+
+  CreateAttributeRequestBodySchemaDataDescription:
+    docs: A text description for the Attribute.
+    type: optional<string>
+
+  CreateAttributeRequestBodySchemaDataApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the Attribute through URLs and API
+      calls. Formatted in snake case.
+    type: string
+
+  CreateAttributeRequestBodySchemaDataType:
+    enum:
+      - static
+
+  CreateAttributeRequestBodySchemaDataIsRequired:
+    docs: >-
+      When `is_required` is `true`, new Records/Entries must have a value for
+      this Attribute. If `false`, values may be `null`. This value does not
+      affect existing data and you do not need to backfill `null` values if
+      changing `is_required` from `false` to `true`.
+    type: boolean
+
+  CreateAttributeRequestBodySchemaDataIsUnique:
+    docs: >-
+      Whether or not new values for this Attribute must be unique. Uniqueness
+      restrictions are only applied to new data and do not apply retroactively
+      to previously created data.
+    type: boolean
+
+  CreateAttributeRequestBodySchemaDataIsMultiselect:
+    docs: >-
+      Whether or not this Attribute can have multiple values. Multiselect is
+      only available on some value types.
+    type: boolean
+
+  CreateAttributeRequestBodySchemaDataDefaultValue:
+    docs: >-
+      The default value for this Attribute. Required when `is_unique` is `true`.
+      Static values are used to directly populate values using their contents.
+      Dynamic values are used to lookup data at the point of creation. For
+      example, you could use a dynamic value to insert a value for the currently
+      logged in user. Which default values are available is dependent on the
+      type of the Attribute. Default values are not currently supported on
+      Objects.
+    type: unknown
+
+  CreateAttributeRequestBodySchemaDataConfig:
+    properties:
+      currency: optional<CreateAttributeRequestBodySchemaDataCurrency>
+      record_reference: optional<CreateAttributeRequestBodySchemaDataRecordReference>
+
+  CreateAttributeRequestBodySchemaDataCurrency:
+    docs: Configuration available for Attributes of type "currency".
+    properties:
+      default_currency_code: CreateAttributeRequestBodySchemaDataDefaultCurrencyCode
+      display_type: CreateAttributeRequestBodySchemaDataDisplayType
+
+  CreateAttributeRequestBodySchemaDataDefaultCurrencyCode:
+    docs: >-
+      The ISO4217 code representing the currency that values for this Attribute
+      should be stored in.
+    enum:
+      - EUR
+      - GBP
+      - USD
+
+  CreateAttributeRequestBodySchemaDataDisplayType:
+    docs: >-
+      How the currency should be displayed across the app. "code" will display
+      the ISO currency code e.g. "USD", "name" will display the localized
+      currency name e.g. "British pound", "narrowSymbol" will display "$1"
+      instead of "US$1" and "symbol" will display a localized currency symbol
+      such as "$".
+    enum:
+      - code
+      - name
+      - narrowSymbol
+      - symbol
+
+  CreateAttributeRequestBodySchemaDataRecordReference:
+    docs: Configuration available for Attributes of type "record-reference".
+    properties:
+      allowed_objects: CreateAttributeRequestBodySchemaDataAllowedObjects
+
+  CreateAttributeRequestBodySchemaDataAllowedObjects:
+    docs: >-
+      A list of slugs or UUIDs to indicate which Objects Records are allowed to
+      belong to. Leave empty to to allow Records from all Object types.
+    type: list<string>
+
+  UpdateAttributeRequestBodySchemaData:
+    properties:
+      title: optional<UpdateAttributeRequestBodySchemaDataTitle>
+      description: optional<UpdateAttributeRequestBodySchemaDataDescription>
+      api_slug: optional<UpdateAttributeRequestBodySchemaDataApiSlug>
+      is_required: optional<UpdateAttributeRequestBodySchemaDataIsRequired>
+      default_value: optional<UpdateAttributeRequestBodySchemaDataDefaultValue>
+      config: optional<UpdateAttributeRequestBodySchemaDataConfig>
+      is_archived: optional<UpdateAttributeRequestBodySchemaDataIsArchived>
+
+  UpdateAttributeRequestBodySchemaDataTitle:
+    docs: The name of the Attribute. The title will be visible across Attio's UI.
+    type: string
+
+  UpdateAttributeRequestBodySchemaDataDescription:
+    docs: A text description for the Attribute.
+    type: optional<string>
+
+  UpdateAttributeRequestBodySchemaDataApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the Attribute through URLs and API
+      calls. Formatted in snake case.
+    type: string
+
+  UpdateAttributeRequestBodySchemaDataIsRequired:
+    docs: >-
+      When `is_required` is `true`, new Records/Entries must have a value for
+      this Attribute. If `false`, values may be `null`. This value does not
+      affect existing data and you do not need to backfill `null` values if
+      changing `is_required` from `false` to `true`.
+    type: boolean
+
+  UpdateAttributeRequestBodySchemaDataDefaultValue:
+    docs: >-
+      The default value for this Attribute. Required when `is_unique` is `true`.
+      Static values are used to directly populate values using their contents.
+      Dynamic values are used to lookup data at the point of creation. For
+      example, you could use a dynamic value to insert a value for the currently
+      logged in user. Which default values are available is dependent on the
+      type of the Attribute. Default values are not currently supported on
+      Objects.
+    type: unknown
+
+  UpdateAttributeRequestBodySchemaDataConfig:
+    docs: Additional, type-dependent configuration for the Attribute.
+    properties:
+      currency: optional<UpdateAttributeRequestBodySchemaDataCurrency>
+      record_reference: optional<UpdateAttributeRequestBodySchemaDataRecordReference>
+
+  UpdateAttributeRequestBodySchemaDataCurrency:
+    docs: Configuration available for Attributes of type "currency".
+    properties:
+      default_currency_code: UpdateAttributeRequestBodySchemaDataDefaultCurrencyCode
+      display_type: UpdateAttributeRequestBodySchemaDataDisplayType
+
+  UpdateAttributeRequestBodySchemaDataDefaultCurrencyCode:
+    docs: >-
+      The ISO4217 code representing the currency that values for this Attribute
+      should be stored in.
+    enum:
+      - EUR
+      - GBP
+      - USD
+
+  UpdateAttributeRequestBodySchemaDataDisplayType:
+    docs: >-
+      How the currency should be displayed across the app. "code" will display
+      the ISO currency code e.g. "USD", "name" will display the localized
+      currency name e.g. "British pound", "narrowSymbol" will display "$1"
+      instead of "US$1" and "symbol" will display a localized currency symbol
+      such as "$".
+    enum:
+      - code
+      - name
+      - narrowSymbol
+      - symbol
+
+  UpdateAttributeRequestBodySchemaDataRecordReference:
+    docs: Configuration available for Attributes of type "record-reference".
+    properties:
+      allowed_objects: UpdateAttributeRequestBodySchemaDataAllowedObjects
+
+  UpdateAttributeRequestBodySchemaDataAllowedObjects:
+    docs: >-
+      A list of slugs or UUIDs to indicate which Objects Records are allowed to
+      belong to. Leave empty to to allow Records from all Object types.
+    type: list<string>
+
+  UpdateAttributeRequestBodySchemaDataIsArchived:
+    docs: >-
+      Whether the Attribute has been archived or not. See our [Archiving
+      guide](/developers/archiving-and-deleting) for more information on
+      archiving.
+    type: boolean
+
+  ListSelectOptionsResponseBodySchemaData: list<select-option>
+
+  select-option:
+    properties:
+      id: Select-optionId
+      title: Select-optionTitle
+      is_archived: Select-optionIsArchived
+
+  Select-optionId:
+    properties:
+      workspace_id: Select-optionWorkspaceId
+      object_id: Select-optionObjectId
+      attribute_id: Select-optionAttributeId
+      option_id: Select-optionOptionId
+
+  Select-optionWorkspaceId:
+    docs: The ID of the Workspace
+    type: string
+
+  Select-optionObjectId:
+    docs: The ID of the Object
+    type: string
+
+  Select-optionAttributeId:
+    docs: The ID of the Workspace
+    type: string
+
+  Select-optionOptionId:
+    docs: The ID of the Select Option
+    type: string
+
+  Select-optionTitle:
+    docs: The Title of the Select Option
+    type: string
+
+  Select-optionIsArchived:
+    docs: >-
+      Whether or not to archive the Select Option. See our [Archiving
+      guide](/developers/archiving-and-deleting) for more information on
+      archiving.
+    type: boolean
+
+  CreateSelectOptionRequestBodySchemaData:
+    properties:
+      title: CreateSelectOptionRequestBodySchemaDataTitle
+
+  CreateSelectOptionRequestBodySchemaDataTitle:
+    docs: The Title of the Select Option
+    type: string
+
+  UpdateSelectOptionRequestBodySchemaData:
+    properties:
+      title: optional<UpdateSelectOptionRequestBodySchemaDataTitle>
+      is_archived: optional<UpdateSelectOptionRequestBodySchemaDataIsArchived>
+
+  UpdateSelectOptionRequestBodySchemaDataTitle:
+    docs: The Title of the Select Option
+    type: string
+
+  UpdateSelectOptionRequestBodySchemaDataIsArchived:
+    docs: >-
+      Whether or not to archive the Select Option. See our [Archiving
+      guide](/developers/archiving-and-deleting) for more information on
+      archiving.
+    type: boolean
+
+  UpdateStatusRequestBodySchemaData:
+    properties:
+      title: optional<UpdateStatusRequestBodySchemaDataTitle>
+      celebration_enabled: optional<UpdateStatusRequestBodySchemaDataCelebrationEnabled>
+      target_time_in_status: optional<UpdateStatusRequestBodySchemaDataTargetTimeInStatus>
+      is_archived: optional<UpdateStatusRequestBodySchemaDataIsArchived>
+
+  UpdateStatusRequestBodySchemaDataTitle:
+    docs: The Title of the Status
+    type: string
+
+  UpdateStatusRequestBodySchemaDataCelebrationEnabled:
+    docs: Whether arriving at this Status triggers a Celebration effect
+    type: boolean
+
+  UpdateStatusRequestBodySchemaDataTargetTimeInStatus:
+    docs: >-
+      Target time for a Record to spend in given Status expressed as a ISO-8601
+      Duration string
+    type: optional<string>
+
+  UpdateStatusRequestBodySchemaDataIsArchived:
+    docs: >-
+      Whether or not to archive the Status. See our [Archiving
+      guide](/developers/archiving-and-deleting) for more information on
+      archiving.
+    type: boolean
+
+  status:
+    properties:
+      id: StatusId
+      title: StatusTitle
+      is_archived: StatusIsArchived
+      celebration_enabled: StatusCelebrationEnabled
+      target_time_in_status: StatusTargetTimeInStatus
+
+  StatusId:
+    properties:
+      workspace_id: StatusWorkspaceId
+      object_id: StatusObjectId
+      attribute_id: StatusAttributeId
+      status_id: StatusStatusId
+
+  StatusWorkspaceId:
+    docs: The ID of the Workspace
+    type: string
+
+  StatusObjectId:
+    docs: The ID of the Object
+    type: string
+
+  StatusAttributeId:
+    docs: The ID of the Attribute
+    type: string
+
+  StatusStatusId:
+    docs: The ID of the Status
+    type: string
+
+  StatusTitle:
+    docs: The Title of the Pipeline Stage
+    type: string
+
+  StatusIsArchived:
+    docs: >-
+      Whether or not to archive the Status. See our [Archiving
+      guide](/developers/archiving-and-deleting) for more information on
+      archiving.
+    type: boolean
+
+  StatusCelebrationEnabled:
+    docs: Whether arriving at this Status triggers a Celebration effect in the UI
+    type: boolean
+
+  StatusTargetTimeInStatus:
+    docs: >-
+      Target time for a Record to spend in given Status expressed as a ISO-8601
+      Duration string
+    type: optional<string>
+
+  ListStatusesResponseBodySchemaData: list<status>
+
+  CreateStatusRequestBodySchemaData:
+    properties:
+      title: CreateStatusRequestBodySchemaDataTitle
+      celebration_enabled: optional<CreateStatusRequestBodySchemaDataCelebrationEnabled>
+      target_time_in_status: optional<CreateStatusRequestBodySchemaDataTargetTimeInStatus>
+
+  CreateStatusRequestBodySchemaDataTitle:
+    docs: The Title of the Status
+    type: string
+
+  CreateStatusRequestBodySchemaDataCelebrationEnabled:
+    docs: Whether arriving at this Status triggers a Celebration effect
+    type: boolean
+
+  CreateStatusRequestBodySchemaDataTargetTimeInStatus:
+    docs: >-
+      Target time for a Record to spend in given Status expressed as a ISO-8601
+      Duration string
+    type: optional<string>
+
+  GetRecordResponseBodySchemaData:
+    properties:
+      id: GetRecordResponseBodySchemaDataId
+      created_at: GetRecordResponseBodySchemaDataCreatedAt
+      values: GetRecordResponseBodySchemaDataValues
+
+  GetRecordResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  GetRecordResponseBodySchemaDataCreatedAt:
+    docs: When this Record was created.
+    type: string
+
+  GetRecordResponseBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType0>
+
+  InlinedType0: unknown
+
+  UpdateRecordRequestBodySchemaData:
+    properties:
+      values: UpdateRecordRequestBodySchemaDataValues
+
+  UpdateRecordRequestBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType1>
+
+  InlinedType1: unknown
+
+  UpdateRecordResponseBodySchemaData:
+    properties:
+      id: UpdateRecordResponseBodySchemaDataId
+      created_at: UpdateRecordResponseBodySchemaDataCreatedAt
+      values: UpdateRecordResponseBodySchemaDataValues
+
+  UpdateRecordResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  UpdateRecordResponseBodySchemaDataCreatedAt:
+    docs: When this Record was created.
+    type: string
+
+  UpdateRecordResponseBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType2>
+
+  InlinedType2: unknown
+
+  ListRecordsRequestBodySchemaFilter:
+    docs: >-
+      An object used to filter results to a subset of records. See the [full
+      guide to filtering and sorting here](/developers/filtering-and-sorting).
+    properties: {}
+
+  # ListRecordsResponseBodySchemaData: list<InlinedType3>
+  ListRecordsResponseBodySchemaData: list<string>
+
+  # InlinedType3:
+  #   properties:
+  #     id: __package__.ListRecordsResponseBodySchemaDataId
+  #     created_at: __package__.ListRecordsResponseBodySchemaDataCreatedAt
+  #     values: __package__.ListRecordsResponseBodySchemaDataValues
+
+  AssertRecordRequestBodySchemaData:
+    properties:
+      values: AssertRecordRequestBodySchemaDataValues
+
+  AssertRecordRequestBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType4>
+
+  InlinedType4: unknown
+
+  AssertRecordResponseBodySchemaData:
+    properties:
+      id: AssertRecordResponseBodySchemaDataId
+      created_at: AssertRecordResponseBodySchemaDataCreatedAt
+      values: AssertRecordResponseBodySchemaDataValues
+
+  AssertRecordResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  AssertRecordResponseBodySchemaDataCreatedAt:
+    docs: When this Record was created.
+    type: string
+
+  AssertRecordResponseBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType5>
+
+  InlinedType5: unknown
+
+  CreateRecordRequestBodySchemaData:
+    properties:
+      values: CreateRecordRequestBodySchemaDataValues
+
+  CreateRecordRequestBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType6>
+
+  InlinedType6: unknown
+
+  CreateRecordResponseBodySchemaData:
+    properties:
+      id: CreateRecordResponseBodySchemaDataId
+      created_at: CreateRecordResponseBodySchemaDataCreatedAt
+      values: CreateRecordResponseBodySchemaDataValues
+
+  CreateRecordResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  CreateRecordResponseBodySchemaDataCreatedAt:
+    docs: When this Record was created.
+    type: string
+
+  CreateRecordResponseBodySchemaDataValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType7>
+
+  InlinedType7: unknown
+
+  ListRecordAttributeValuesResponseBodySchemaData: list<unknown>
+
+  ListListsResponseBodySchemaData: list<list>
+
+  list:
+    properties:
+      id: ListId
+      api_slug: ListApiSlug
+      name: ListName
+      parent_object: ListParentObject
+      workspace_access: ListWorkspaceAccess
+      workspace_member_access: ListWorkspaceMemberAccess
+      created_by_actor: ListCreatedByActor
+      created_at: ListCreatedAt
+
+  ListId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  ListApiSlug:
+    docs: A human-readable slug for use in URLs and responses.
+    type: string
+
+  ListName:
+    docs: The name of the List, as viewed in the UI.
+    type: string
+
+  ListParentObject:
+    docs: >-
+      A UUID or slug to identify the allowed Object type for Records added to
+      this List. All new Lists are expected to have exactly one parent Object.
+      However, some legacy Lists may have multiple allowed parents so the return
+      type of this field is an array.
+    type: list<string>
+
+  ListWorkspaceAccess:
+    docs: >-
+      The level of access granted to all members of the Workspace for this List.
+      `null` values represent a private List that only grants access to specific
+      Workspace Members via the `workspace_member_access` property.
+    enum:
+      - name: full_access
+        value: full-access
+      - name: read_and_write
+        value: read-and-write
+      - name: read_only
+        value: read-only
+
+  ListWorkspaceMemberAccess:
+    docs: >-
+      The level of access granted to specific Workspace Members for this List.
+      An empty array represents a List that has granted access to no Workspace
+      Members.
+    type: list<string>
+    # type: list<InlinedType8>
+
+  # InlinedType8:
+  #   properties:
+  #     workspace_member_id: __package__.ListWorkspaceMemberId
+  #     level: __package__.ListLevel
+
+  ListCreatedByActor:
+    docs: The Actor which created this List.
+    properties:
+      id: optional<ListId>
+      type: optional<ListType>
+
+  ListType:
+    docs: >-
+      The type of Actor. [Read more information on Actor types
+      here](/developers/actors).
+    enum:
+      - name: api_token
+        value: api-token
+      - name: workspace_member
+        value: workspace-member
+      - name: system
+        value: system
+
+  ListCreatedAt:
+    docs: When the List was created.
+    type: string
+
+  CreateListRequestBodySchemaData:
+    properties:
+      name: CreateListRequestBodySchemaDataName
+      api_slug: CreateListRequestBodySchemaDataApiSlug
+      parent_object: CreateListRequestBodySchemaDataParentObject
+      workspace_access: CreateListRequestBodySchemaDataWorkspaceAccess
+      workspace_member_access: CreateListRequestBodySchemaDataWorkspaceMemberAccess
+
+  CreateListRequestBodySchemaDataName:
+    docs: The human-readable name of the List.
+    type: string
+
+  CreateListRequestBodySchemaDataApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the List through API calls. Should
+      be formatted in snake case.
+    type: string
+
+  CreateListRequestBodySchemaDataParentObject:
+    docs: >-
+      A UUID or slug to identify the allowed Object type for Records added to
+      this List.
+    type: string
+
+  CreateListRequestBodySchemaDataWorkspaceAccess:
+    docs: >-
+      The level of access granted to all members of the Workspace for this List.
+      Pass `null` to keep the List private and only grant access to specific
+      Workspace Members.
+    enum:
+      - name: full_access
+        value: full-access
+      - name: read_and_write
+        value: read-and-write
+      - name: read_only
+        value: read-only
+
+  CreateListRequestBodySchemaDataWorkspaceMemberAccess:
+    docs: >-
+      The level of access granted to specific Workspace Members for this List.
+      Pass an empty array to grant access to no Workspace Members.
+    type: list<string>
+    # type: list<InlinedType9>
+
+  # InlinedType9:
+  #   properties:
+  #     workspace_member_id: __package__.CreateListRequestBodySchemaDataWorkspaceMemberId
+  #     level: __package__.CreateListRequestBodySchemaDataLevel
+
+  UpdateListRequestBodySchemaData:
+    properties:
+      name: optional<UpdateListRequestBodySchemaDataName>
+      api_slug: optional<UpdateListRequestBodySchemaDataApiSlug>
+      workspace_access: optional<UpdateListRequestBodySchemaDataWorkspaceAccess>
+      workspace_member_access: optional<UpdateListRequestBodySchemaDataWorkspaceMemberAccess>
+
+  UpdateListRequestBodySchemaDataName:
+    docs: The human-readable name of the List.
+    type: string
+
+  UpdateListRequestBodySchemaDataApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the List through API calls. Should
+      be formatted in snake case.
+    type: string
+
+  UpdateListRequestBodySchemaDataWorkspaceAccess:
+    docs: >-
+      The level of access granted to all members of the Workspace for this List.
+      Pass `null` to keep the List private and only grant access to specific
+      Workspace Members.
+    enum:
+      - name: full_access
+        value: full-access
+      - name: read_and_write
+        value: read-and-write
+      - name: read_only
+        value: read-only
+
+  UpdateListRequestBodySchemaDataWorkspaceMemberAccess:
+    docs: >-
+      The level of access granted to specific Workspace Members for this List.
+      Pass an empty array to grant access to no Workspace Members.
+    type: list<string>
+    # type: list<InlinedType10>
+
+  # InlinedType10:
+  #   properties:
+  #     workspace_member_id: __package__.UpdateListRequestBodySchemaDataWorkspaceMemberId
+  #     level: __package__.UpdateListRequestBodySchemaDataLevel
+
+  ListEntriesRequestBodySchemaFilter:
+    docs: >-
+      An object used to filter results to a subset of records. See the [full
+      guide to filtering and sorting here](/developers/filtering-and-sorting).
+    properties: {}
+
+  # ListEntriesResponseBodySchemaData: list<InlinedType11>
+  ListEntriesResponseBodySchemaData: list<string>
+
+  # InlinedType11:
+  #   properties:
+  #     id: __package__.ListEntriesResponseBodySchemaDataId
+  #     parent_record_id: __package__.ListEntriesResponseBodySchemaDataParentRecordId
+  #     parent_object: __package__.ListEntriesResponseBodySchemaDataParentObject
+  #     created_at: __package__.ListEntriesResponseBodySchemaDataCreatedAt
+  #     entry_values: __package__.ListEntriesResponseBodySchemaDataEntryValues
+
+  GetListEntryResponseBodySchemaData:
+    properties:
+      id: GetListEntryResponseBodySchemaDataId
+      parent_record_id: GetListEntryResponseBodySchemaDataParentRecordId
+      parent_object: GetListEntryResponseBodySchemaDataParentObject
+      created_at: GetListEntryResponseBodySchemaDataCreatedAt
+      entry_values: GetListEntryResponseBodySchemaDataEntryValues
+
+  GetListEntryResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  GetListEntryResponseBodySchemaDataParentRecordId:
+    docs: A UUID identifying the Record that is parent of the List Entry.
+    type: string
+
+  GetListEntryResponseBodySchemaDataParentObject:
+    docs: A UUID or Slug identifying the Object that the parent Record belongs to.
+    type: string
+
+  GetListEntryResponseBodySchemaDataCreatedAt:
+    docs: When this Entry was created.
+    type: string
+
+  GetListEntryResponseBodySchemaDataEntryValues:
+    docs: >-
+      A list of Attribute values for the List Entry (not Attribute Values for
+      its parent Record.)
+    type: map<string, InlinedType12>
+
+  InlinedType12: unknown
+
+  UpdateListEntryRequestBodySchemaData:
+    properties:
+      entry_values: UpdateListEntryRequestBodySchemaDataEntryValues
+
+  UpdateListEntryRequestBodySchemaDataEntryValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType13>
+
+  InlinedType13: unknown
+
+  UpdateListEntryResponseBodySchemaData:
+    properties:
+      id: UpdateListEntryResponseBodySchemaDataId
+      parent_record_id: UpdateListEntryResponseBodySchemaDataParentRecordId
+      parent_object: UpdateListEntryResponseBodySchemaDataParentObject
+      created_at: UpdateListEntryResponseBodySchemaDataCreatedAt
+      entry_values: UpdateListEntryResponseBodySchemaDataEntryValues
+
+  UpdateListEntryResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  UpdateListEntryResponseBodySchemaDataParentRecordId:
+    docs: A UUID identifying the Record that is parent of the List Entry.
+    type: string
+
+  UpdateListEntryResponseBodySchemaDataParentObject:
+    docs: A UUID or Slug identifying the Object that the parent Record belongs to.
+    type: string
+
+  UpdateListEntryResponseBodySchemaDataCreatedAt:
+    docs: When this Entry was created.
+    type: string
+
+  UpdateListEntryResponseBodySchemaDataEntryValues:
+    docs: >-
+      A list of Attribute values for the List Entry (not Attribute Values for
+      its parent Record.)
+    type: map<string, InlinedType14>
+
+  InlinedType14: unknown
+
+  PatchUpdateListEntryRequestBodySchemaData:
+    properties:
+      entry_values: PatchUpdateListEntryRequestBodySchemaDataEntryValues
+
+  PatchUpdateListEntryRequestBodySchemaDataEntryValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType15>
+
+  InlinedType15: unknown
+
+  PatchUpdateListEntryResponseBodySchemaData:
+    properties:
+      id: PatchUpdateListEntryResponseBodySchemaDataId
+      parent_record_id: PatchUpdateListEntryResponseBodySchemaDataParentRecordId
+      parent_object: PatchUpdateListEntryResponseBodySchemaDataParentObject
+      created_at: PatchUpdateListEntryResponseBodySchemaDataCreatedAt
+      entry_values: PatchUpdateListEntryResponseBodySchemaDataEntryValues
+
+  PatchUpdateListEntryResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  PatchUpdateListEntryResponseBodySchemaDataParentRecordId:
+    docs: A UUID identifying the Record that is parent of the List Entry.
+    type: string
+
+  PatchUpdateListEntryResponseBodySchemaDataParentObject:
+    docs: A UUID or Slug identifying the Object that the parent Record belongs to.
+    type: string
+
+  PatchUpdateListEntryResponseBodySchemaDataCreatedAt:
+    docs: When this Entry was created.
+    type: string
+
+  PatchUpdateListEntryResponseBodySchemaDataEntryValues:
+    docs: >-
+      A list of Attribute values for the List Entry (not Attribute Values for
+      its parent Record.)
+    type: map<string, InlinedType16>
+
+  InlinedType16: unknown
+
+  AddRecordtoListRequestBodySchemaData:
+    properties:
+      parent_record_id: AddRecordtoListRequestBodySchemaDataParentRecordId
+      parent_object: AddRecordtoListRequestBodySchemaDataParentObject
+      entry_values: AddRecordtoListRequestBodySchemaDataEntryValues
+
+  AddRecordtoListRequestBodySchemaDataParentRecordId:
+    docs: >-
+      A UUID identifying the Record you want to add to the List. The Record will
+      become the 'parent' of the created List Entry.
+    type: string
+
+  AddRecordtoListRequestBodySchemaDataParentObject:
+    docs: >-
+      A UUID or Slug identifying the Object that the added parent Record belongs
+      to.
+    type: string
+
+  AddRecordtoListRequestBodySchemaDataEntryValues:
+    docs: >-
+      A record type with `attribute_id` as the key, and an array of Value
+      objects as the values.
+    type: map<string, InlinedType17>
+
+  InlinedType17: unknown
+
+  AddRecordtoListResponseBodySchemaData:
+    properties:
+      id: AddRecordtoListResponseBodySchemaDataId
+      parent_record_id: AddRecordtoListResponseBodySchemaDataParentRecordId
+      parent_object: AddRecordtoListResponseBodySchemaDataParentObject
+      created_at: AddRecordtoListResponseBodySchemaDataCreatedAt
+      entry_values: AddRecordtoListResponseBodySchemaDataEntryValues
+
+  AddRecordtoListResponseBodySchemaDataId:
+    docs: An ID to identify the Actor.
+    type: string
+
+  AddRecordtoListResponseBodySchemaDataParentRecordId:
+    docs: A UUID identifying the Record that is parent of the List Entry.
+    type: string
+
+  AddRecordtoListResponseBodySchemaDataParentObject:
+    docs: A UUID or Slug identifying the Object that the parent Record belongs to.
+    type: string
+
+  AddRecordtoListResponseBodySchemaDataCreatedAt:
+    docs: When this Entry was created.
+    type: string
+
+  AddRecordtoListResponseBodySchemaDataEntryValues:
+    docs: >-
+      A list of Attribute values for the List Entry (not Attribute Values for
+      its parent Record.)
+    type: map<string, InlinedType18>
+
+  InlinedType18: unknown
+
+  ListListEntryAttributeValuesResponseBodySchemaData: list<unknown>
+
+  ListObjectsResponse:
+    properties:
+      data: ListObjectsResponseBodySchemaData
+
+  GetObjectsResponse:
+    properties:
+      data: object
+
+  TargetParameters:
+    docs: Whether the Attributes are on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  ListAttributesResponse:
+    properties:
+      data: ListAttributesResponseBodySchemaData
+
+  InlinedType25:
+    docs: Whether the Attribute is to be created on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  CreateAttributeResponse:
+    properties:
+      data: attribute
+
+  InlinedType28:
+    docs: Whether the Attribute is on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  GetAttributeResponse:
+    properties:
+      data: attribute
+
+  InlinedType31:
+    docs: Whether the Attribute is on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  UpdateAttributeResponse:
+    properties:
+      data: attribute
+
+  InlinedType34:
+    docs: Whether the Attribute is on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  ListSelectOptionsResponse:
+    properties:
+      data: ListSelectOptionsResponseBodySchemaData
+
+  InlinedType37:
+    docs: Whether the Attribute is on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  CreateOptionResponse:
+    properties:
+      data: select-option
+
+  InlinedType40:
+    docs: Whether the Attribute is on an Object or a List.
+    enum:
+      - objects
+      - lists
+
+  UpdateOptionResponse:
+    properties:
+      data: select-option
+
+  InlinedType43:
+    docs: >-
+      Whether the Attribute is on an Object or a List. Only Lists support Status
+      Attributes at this time.
+    enum:
+      - lists
+
+  UpdateStatusResponse:
+    properties:
+      data: status
+
+  InlinedType46:
+    docs: >-
+      Whether the Attribute is on an Object or a List. Only Lists support Status
+      Attributes at this time.
+    enum:
+      - lists
+
+  GetStatusResponse:
+    properties:
+      data: ListStatusesResponseBodySchemaData
+
+  InlinedType49:
+    docs: >-
+      Whether the Attribute is on an Object or a List. Only Lists support Status
+      Attributes at this time.
+    enum:
+      - lists
+
+  CreateStatusResponse:
+    properties:
+      data: status
+
+  GetRecordResponse:
+    properties:
+      data: GetRecordResponseBodySchemaData
+
+  UpdateRecordResponse:
+    properties:
+      data: UpdateRecordResponseBodySchemaData
+
+  GetAllRecordsResponse:
+    properties:
+      data: ListRecordsResponseBodySchemaData
+
+  AssertRecordResponse:
+    properties:
+      data: AssertRecordResponseBodySchemaData
+
+  CreateRecordResponse:
+    properties:
+      data: CreateRecordResponseBodySchemaData
+
+  ListRecordAttributeResponse:
+    properties:
+      data: ListRecordAttributeValuesResponseBodySchemaData
+
+  ListResponse:
+    properties:
+      data: ListListsResponseBodySchemaData
+
+  CreateListResponse:
+    properties:
+      data: list
+
+  GetAllEntriesResponse:
+    properties:
+      data: ListEntriesResponseBodySchemaData
+
+  GetListEntryResponse:
+    properties:
+      data: GetListEntryResponseBodySchemaData
+
+  UpdateListEntryResponse:
+    properties:
+      data: UpdateListEntryResponseBodySchemaData
+
+  DeleteListEntryResponse:
+    properties: {}
+
+  PatchUpdateListEntryResponse:
+    properties:
+      data: PatchUpdateListEntryResponseBodySchemaData
+
+  AddRecordToListResponse:
+    properties:
+      data: AddRecordtoListResponseBodySchemaData
+
+  ListEntryAttributesResponse:
+    properties:
+      data: ListListEntryAttributeValuesResponseBodySchemaData

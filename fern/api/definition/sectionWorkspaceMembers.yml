@@ -1,0 +1,89 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+service:
+  auth: false
+  base-path: /v2/workspace_members
+  endpoints:
+    get:
+      path: /{workspace_member_id}
+      method: GET
+      docs: Gets a single Workspace Member by ID.
+      display-name: Get Workspace Member
+      path-parameters:
+        workspace_member_id: string
+      request:
+        name: GetWorkspaceMemberRequest
+      response: GetMemberResponse
+
+    getAll:
+      path: ""
+      method: GET
+      docs: Lists all Workspace Members in the Workspace.
+      display-name: List Workspace Members
+      request:
+        name: ListWorkspaceMembersRequest
+      response: GetAllMemberResponse
+
+types:
+  workspace-member:
+    properties:
+      id: Workspace-memberId
+      first_name: Workspace-memberFirstName
+      last_name: Workspace-memberLastName
+      avatar_url: Workspace-memberAvatarUrl
+      email_address: Workspace-memberEmailAddress
+      created_at: Workspace-memberCreatedAt
+      access_level: Workspace-memberAccessLevel
+
+  Workspace-memberId:
+    properties:
+      workspace_id: Workspace-memberWorkspaceId
+      workspace_member_id: Workspace-memberWorkspaceMemberId
+
+  Workspace-memberWorkspaceId:
+    docs: The ID of the Workspace the Workspace Member belongs to.
+    type: string
+
+  Workspace-memberWorkspaceMemberId:
+    docs: The ID of the Workspace Member.
+    type: string
+
+  Workspace-memberFirstName:
+    docs: The first name of the user.
+    type: string
+
+  Workspace-memberLastName:
+    docs: The last name of the user.
+    type: string
+
+  Workspace-memberAvatarUrl:
+    docs: A URL to the user's avatar image.
+    type: optional<string>
+
+  Workspace-memberEmailAddress:
+    docs: The user's email address.
+    type: string
+
+  Workspace-memberCreatedAt:
+    docs: When the Workspace Member was created.
+    type: string
+
+  Workspace-memberAccessLevel:
+    docs: >-
+      Whether the Member is suspended or not and what level of privileges they
+      have inside the Workspace. We do not delete Workspace Members so that you
+      can successfully attribute past actions to suspended Members.
+    enum:
+      - admin
+      - member
+      - suspended
+
+  ListWorkspaceMembersResponseBodySchemaData: list<workspace-member>
+
+  GetMemberResponse:
+    properties:
+      data: workspace-member
+
+  GetAllMemberResponse:
+    properties:
+      data: ListWorkspaceMembersResponseBodySchemaData
