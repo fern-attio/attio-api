@@ -11,64 +11,60 @@ service:
       display-name: Get Workspace Member
       path-parameters:
         workspace_member_id: string
-      request:
-        name: GetWorkspaceMemberRequest
       response: GetMemberResponse
 
-    getAll:
+    list:
       path: ""
       method: GET
       docs: Lists all Workspace Members in the Workspace.
       display-name: List Workspace Members
-      request:
-        name: ListWorkspaceMembersRequest
       response: GetAllMemberResponse
 
 types:
-  workspace-member:
+  WorkspaceMember:
     properties:
-      id: Workspace-memberId
-      first_name: Workspace-memberFirstName
-      last_name: Workspace-memberLastName
-      avatar_url: Workspace-memberAvatarUrl
-      email_address: Workspace-memberEmailAddress
-      created_at: Workspace-memberCreatedAt
-      access_level: Workspace-memberAccessLevel
+      id: WorkspaceMemberId
+      first_name: WorkspaceMemberFirstName
+      last_name: WorkspaceMemberLastName
+      avatar_url: WorkspaceMemberAvatarUrl
+      email_address: WorkspaceMemberEmailAddress
+      created_at: WorkspaceMemberCreatedAt
+      access_level: WorkspaceMemberAccessLevel
 
-  Workspace-memberId:
+  WorkspaceMemberId:
     properties:
-      workspace_id: Workspace-memberWorkspaceId
-      workspace_member_id: Workspace-memberWorkspaceMemberId
+      workspace_id: WorkspaceMemberWorkspaceId
+      workspace_member_id: WorkspaceMemberWorkspaceMemberId
 
-  Workspace-memberWorkspaceId:
+  WorkspaceMemberWorkspaceId:
     docs: The ID of the Workspace the Workspace Member belongs to.
     type: string
 
-  Workspace-memberWorkspaceMemberId:
+  WorkspaceMemberWorkspaceMemberId:
     docs: The ID of the Workspace Member.
     type: string
 
-  Workspace-memberFirstName:
+  WorkspaceMemberFirstName:
     docs: The first name of the user.
     type: string
 
-  Workspace-memberLastName:
+  WorkspaceMemberLastName:
     docs: The last name of the user.
     type: string
 
-  Workspace-memberAvatarUrl:
+  WorkspaceMemberAvatarUrl:
     docs: A URL to the user's avatar image.
     type: optional<string>
 
-  Workspace-memberEmailAddress:
+  WorkspaceMemberEmailAddress:
     docs: The user's email address.
     type: string
 
-  Workspace-memberCreatedAt:
+  WorkspaceMemberCreatedAt:
     docs: When the Workspace Member was created.
     type: string
 
-  Workspace-memberAccessLevel:
+  WorkspaceMemberAccessLevel:
     docs: >-
       Whether the Member is suspended or not and what level of privileges they
       have inside the Workspace. We do not delete Workspace Members so that you
@@ -78,12 +74,10 @@ types:
       - member
       - suspended
 
-  ListWorkspaceMembersResponseBodySchemaData: list<workspace-member>
-
   GetMemberResponse:
     properties:
-      data: workspace-member
+      data: WorkspaceMember
 
   GetAllMemberResponse:
     properties:
-      data: ListWorkspaceMembersResponseBodySchemaData
+      data: list<WorkspaceMember>

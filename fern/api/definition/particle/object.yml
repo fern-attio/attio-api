@@ -1,0 +1,70 @@
+service:
+  auth: true
+  base-path: /v2/objects
+  endpoints:
+    list:
+      path: ""
+      method: GET
+      docs: >-
+        Lists all system-defined and user-defined objects in your workspace,
+        including their defined attributes.
+      display-name: List Objects
+      response: ListObjectResponse
+
+    get:
+      path: /{object_id}
+      method: GET
+      docs: Gets a single Object by its `object_id`.
+      display-name: Get Object
+      path-parameters:
+        object_id: string
+      response: GetObjectResponse
+
+types: 
+
+  GetObjectResponse: 
+    properties: 
+      data: Object
+
+  ListObjectResponse:
+    properties:
+      data: list<Object>
+
+  Object:
+    properties:
+      id: ObjectId
+      api_slug: ObjectApiSlug
+      singular_noun: ObjectSingularNoun
+      plural_noun: ObjectPluralNoun
+      created_at: ObjectCreatedAt
+
+  ObjectId:
+    properties:
+      workspace_id: ObjectWorkspaceId
+      object_id: ObjectObjectId
+
+  ObjectWorkspaceId:
+    docs: A UUID to identify the Workspace this Object belongs to.
+    type: string
+
+  ObjectObjectId:
+    docs: A UUID to identify the Object.
+    type: string
+
+  ObjectApiSlug:
+    docs: >-
+      A unique, human-readable slug to access the Object through URLs and API
+      calls. Formatted in snake case.
+    type: optional<string>
+
+  ObjectSingularNoun:
+    docs: The singular form of the Object's name.
+    type: optional<string>
+
+  ObjectPluralNoun:
+    docs: The plural form of the Object's name.
+    type: optional<string>
+
+  ObjectCreatedAt:
+    docs: When the Object was created.
+    type: string
