@@ -13,7 +13,7 @@ This repository contains
 
 ## What is in the API Definition?
 
-The API Definition contains information about what endpoints, types, and errors are used in the API. The definition is broken into smaller files such as [sectionParticle.yml](fern/api/definition/sectionParticle.yml) and [sectionWorkspace.yml](fern/api/definition/sectionWorkspace.yml).
+The API Definition contains information about what endpoints, types, and errors are used in the API. The definition is broken into smaller files such as [sectionParticle.yml](fern/api/definition/workspaceMembers.yml).
 
 To make sure that the definition is valid, you can use the Fern CLI.
 
