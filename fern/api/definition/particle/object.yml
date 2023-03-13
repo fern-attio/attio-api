@@ -24,13 +24,13 @@ types:
 
   GetObjectResponse: 
     properties: 
-      data: Object
+      data: AttioObject
 
   ListObjectResponse:
     properties:
-      data: list<Object>
+      data: list<AttioObject>
 
-  Object:
+  AttioObject:
     properties:
       id: ObjectId
       api_slug: ObjectApiSlug
