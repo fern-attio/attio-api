@@ -1,0 +1,6 @@
+name: api
+display-name: Attio Public API
+auth: bearer
+default-environment: Production
+environments: 
+  Production: https://api.attio.com/
