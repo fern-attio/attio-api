@@ -3,7 +3,7 @@ groups:
   publish:
     generators:
       - name: fernapi/fern-typescript-sdk
-        version: 0.5.0
+        version: 0.5.0-1-ga9e6fb01
         output:
           location: npm
           package-name: '@fern-api/attio'
